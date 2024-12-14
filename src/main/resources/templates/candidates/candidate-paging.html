@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{../../css/basicCandidate.css}">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-
+T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous">
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-
+C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+    <style>
+        .activePage, .normalPage {
+
+            width: 25px;
+            height: 25px;
+            text-align: center;
+            line-height: 25px;
+            display: inline-block;
+            border: 1px solid #222;
+            border-radius: 4px;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        .activePage {
+            background-color: yellow;
+        }
+        button > a{
+            color: white;
+            font-size: 18px;
+            text-decoration: none;
+        }
+
+        .pageNumbers {
+            margin: 10px 0;
+            display: inline-block;
+        }
+
+        .action {
+            display: block;
+        }
+        .navbar-custom {
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+<div class="w-100 mx-auto pd-10">
+    <nav class="w-100 navbar navbar-expand-lg bg-body-tertiary position-fixed navbar-custom" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/home-company}">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                       <a class="nav-link active" aria-current="page" th:href="@{/jobs/list(companyName=${company.getCompName()})}">Manage Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/jobs/news}">News Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/candidate}">Candidate</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="app">
+            <div class="profile">
+                <img src="https://khuenam.vn/uploads/news/post/images/18072024050017_hinh-anh-tuyen-dung_012647407.jpg" alt="avatar">
+                <span style="font-size: 20px; font-weight: 600; color: white">Company</span>
+            </div>
+            <div class="info">
+                <div th:if="${company}">
+                    <p>Company Id: <span th:text="${company.getId()}"></span></p>
+                    <p>Company Name: <span th:text="${company.compName}"></span></p>
+                    <p>Company Phone: <span th:text="${company.getPhone()}"></span></p>
+                    <p>Company Address:
+                        <span th:text="${company.getAddress().getNumber()}"></span>
+                        <span th:text="${company.getAddress().getStreet()}"></span>
+                        <span th:text="${company.getAddress().getCity()}"></span>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <button style="border: none; padding: 0 10px; background:none;" onclick="logout()">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+    </nav>
+    <div style="padding-top: 60px;"></div>
+    <div class="row row-cols-1 row-cols-md-6 g-2 mx-2 justify-content-center">
+        <div class="card mb-2 mx-2" th:each="candidate, iStat : ${candidatePage.content}" >
+            <div class="card-body text-center">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                     class="rounded-circle img-fluid" style="width: 150px;">
+                <h5 class="my-3" th:text="${candidate.fullName}">John Smith</h5>
+                <span class="text-muted mb-1" th:text="'Dob: ' + ${candidate.dob}"></span>
+                <p class="text-muted mb-1" th:text="'Address: ' + ${candidate.address}"></p>
+                <p class="text-muted mb-1" th:text="'PhoneNumber: ' + ${candidate.phone}"></p>
+                <p class="text-muted mb-1"  th:text="'Email: ' + ${candidate.email}"></p>
+                <div class="d-flex justify-content-center mb-2">
+                    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Send Email</button>
+                    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-75 mx-auto">
+        <div class="pageNumbers" th:if="${candidatePage.totalPages > 0}" th:each="pageNumber :
+    ${pageNumbers}">
+            <a th:href="@{/candidate(size=${candidatePage.size}, page=${pageNumber})}"
+               th:text="${pageNumber}"
+               th:class="${pageNumber==candidatePage.number + 1} ? activePage : normalPage"></a>
+        </div>
+    </div>
+</div>
+<br/>
+<script>
+    function logout() {
+        window.location.href="/account/logout";
+    }
+</script>
+</body>
+</html>

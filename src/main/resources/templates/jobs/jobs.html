@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Candidates</title>
+    <link rel="stylesheet" th:href="@{../../css/basicCandidate.css}">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-
+T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous">
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-
+C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/home-company}">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/jobs/list(companyName=${company.getCompName()})}">Manage Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/jobs/news}">News Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/candidate}">Candidate</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="app">
+        <div class="profile">
+            <img src="https://khuenam.vn/uploads/news/post/images/18072024050017_hinh-anh-tuyen-dung_012647407.jpg" alt="avatar">
+            <span style="font-size: 20px; font-weight: 600; color: white">Company</span>
+        </div>
+        <div class="info">
+            <div th:if="${company}">
+                <p>Company Id: <span th:text="${company.getId()}"></span></p>
+                <p>Company Name: <span th:text="${company.compName}"></span></p>
+                <p>Company Phone: <span th:text="${company.getPhone()}"></span></p>
+                <p>Company Address:
+                    <span th:text="${company.getAddress().getNumber()}"></span>
+                    <span th:text="${company.getAddress().getStreet()}"></span>
+                    <span th:text="${company.getAddress().getCity()}"></span>
+                </p>
+            </div>
+
+        </div>
+    </div>
+    <button style="border: none; padding: 0 10px; background:none;" onclick="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
+</nav>
+<div th:switch="${jobs}" class="w-75 mx-auto mt-5">
+    <h2 th:case="null">No job yet!</h2>
+    <div th:case="*">
+        <div class="d-flex w-100 justify-content-between align-items-center mt-2 mb-2">
+            <h2>JOB OF COMPANY</h2>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+               Add Job
+            </button>
+        </div>
+        <table class="table table-hover table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Job Description</th>
+                <th scope="col">Job Name</th>
+                <th scope="col">Company</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+                <th scope="col">View Detail</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="job : ${jobs}">
+                <td th:text="${job.id}"></td>
+                <td th:text="${job.jobDesc}"></td>
+                <td th:text="${job.jobName}"></td>
+                <td th:text="${job.getCompany().getCompName()}"></td>
+                <td><a th:href="@{/jobs/edit/{id}(id=${job.id})}">Edit</a></td>
+                <td><a th:href="@{/jobs/delete(id=${job.id}, companyName=${job.getCompany().getCompName()})}">Delete</a></td>
+                <td><a th:href="@{/jobs/viewDetail(id=${job.id})}">Detail</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade modal-xl" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Create Job</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-group" th:action="@{/jobs/create}" method="POST">
+                    <label for="companyName" class="form-label">Company Name:
+                    </label>
+                        <input id="companyName" name="companyName" class="form-control mb-4" type="text" th:value="${company.getCompName()}" style="user-select: none; pointer-events: none"/>
+                    <label for="jobName" class="form-label">Job Name:
+                    </label>
+                        <input id="jobName" name="jobName" type="text" class="form-control mb-4" placeholder="Job Name"/>
+                    <label for="jobDes" class="form-label">Job Description:
+                    </label>
+                        <input id="jobDes" type="text" name="jobDes" class="form-control mb-4" placeholder="Job Description"/>
+                    <label class="form-label">Skill:
+                    </label>
+                    <table class="table table-hover table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Skill name</th>
+                                <th scope="col">More Info</th>
+                                <th scope="col">Level</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="skill, itemStart : ${skills}">
+                                <td>
+                                    <input  th:value="${itemStart.index}" name="checkSKill" type="checkbox"/>
+                                </td>
+                                <td th:text="${skill.skillName}"></td>
+                                <td>
+                                    <input name="moreInfo" type="text" class="form-control" placeholder="Enter more information..."/>
+                                </td>
+                                <td>
+                                    <select name="skillLevel">
+                                        <option value="2">BEGINNER</option>
+                                        <option value="1">MASTER</option>
+                                        <option value="3">ADVANCED</option>
+                                        <option value="4">PROFESSIONAL</option>
+                                        <option value="5">IMTERMEDIATE</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function logout() {
+        window.location.href="/account/logout"
+    }
+</script>
+</body>
+</html>

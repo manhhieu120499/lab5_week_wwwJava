@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-
+T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous">
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-
+C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+
+    <style>
+        .info-job {
+            width: 450px;
+            min-height: 120px;
+            margin: 10px 120px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #2D99E3;
+            color: white;
+
+            & > p {
+                font-weight: bold;
+                max-width: 100%;
+                white-space: wrap;
+            }
+            span {
+                font-weight: normal;
+            }
+        }
+        img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+<div class="info-job">
+    <p>Job Name: <span th:text="${job.jobName}"></span></p>
+    <p>Job Description: <span th:text="${job.jobDesc}"></span></p>
+    <p>Job Of Company: <span th:text="${job.getCompany().getCompName()}"></span></p>
+</div>
+<div class="info-skill w-75 mx-auto mt-4">
+    <table class="w-100 table table-hover table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Skill Name</th>
+                <th>Skill Description</th>
+                <th>More info of job</th>
+                <th>Skill Type</th>
+            </tr>
+        </thead>
+        <tbody th:switch="${skills}">
+            <tr th:case="null">
+                <td class="text-center" colspan="5">Skill for job not update yet!</td>
+            </tr>
+            <tr th:each="skill, itemStart : ${skills}">
+                <td th:text="${itemStart.count}"></td>
+                <td th:text="${skill.getSkill().getSkillName()}"></td>
+                <td th:text="${skill.getSkill().getSkillDescription()}"></td>
+                <td th:text="${skill.getMoreInfo()}"></td>
+                <td th:text="${skill.getSkill().getType()}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:switch="${skillsSuggest}" >
+        <div th:case="null" style="margin-top: 40px;">
+            <p></p>
+        </div>
+        <div th:case="*" style="margin-top: 40px;">
+            <h5>Suggest skills which you haven't it or upgrade it</h5>
+            <table class="table table-bordered table-custom">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Skill Name</th>
+                        <th>Skill Description</th>
+                        <th>Skill Type</th>
+                        <th>Skill Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="skillDTO, itemStart : ${skillsSuggest}">
+                        <td th:text="${itemStart.count}"></td>
+                        <td th:text="${skillDTO.getSkill().getSkillName()}"></td>
+                        <td th:text="${skillDTO.getSkill().getSkillDescription()}"></td>
+                        <td th:text="${skillDTO.getSkill().getType()}"></td>
+                        <td th:text="${skillDTO.getLevel()}"></td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

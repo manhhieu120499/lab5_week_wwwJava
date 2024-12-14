@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{../../css/basicCandidate.css}">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-
+T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous">
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-
+C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/jobs/jobComfortableForSkill(canId=${candidate.getId()})}">Suggest Jobs For You</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="app">
+        <div class="profile">
+            <img src="https://khuenam.vn/uploads/news/post/images/18072024050017_hinh-anh-tuyen-dung_012647407.jpg" alt="avatar">
+            <span style="font-size: 20px; font-weight: 600">Candidate</span>
+        </div>
+        <div class="info">
+            <div th:if="${candidate}">
+                <p>Candidate Id: <span th:text="${candidate.getId()}"></span></p>
+                <p>Candidate Name: <span th:text="${candidate.getFullName()}"></span></p>
+                <p>Candidate Phone: <span th:text="${candidate.getPhone()}"></span></p>
+            </div>
+        </div>
+    </div>
+    <button style="border: none; padding: 0 10px; background:none;" onclick="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
+</nav>
+<div class="banner w-100">
+    <img src="https://www.pace.edu.vn/uploads/news/2023/10/1-nhan-vien-tuyen-dung-la-gi.jpg" alt="avatar-banner" class="banner-image">
+    <p style="position: absolute; top: 200px; right:140px; color: black; font-size: 100px; width: 500px; text-align: center;">Let's Find Job For You!</p>
+</div>
+<script>
+    function logout() {
+        window.location.href = "/account/logout";
+    }
+</script>
+</body>
+</html>
