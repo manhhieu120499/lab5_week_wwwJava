@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-
+T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous">
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-
+C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+
+    <style>
+        body {
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wrapper {
+            margin-top: 150px;
+        }
+
+        .notify {
+            font-size: 25px;
+            font-weight: bold;
+        }
+        .link{
+            font-size: 20px;
+            margin-left: 15px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="w-100 d-flex align-items-center mt-3" th:switch="${message}">
+    <a th:case="*" href="/candidate" class="link"> < Go Candidate</a>
+</div>
+<div class="d-flex flex-column justify-content-center align-items-center w-100 wrapper">
+    <form class="w-25 bg-light p-3 rounded border shadow" action="/jobs/mail/send" method="POST">
+        <div class="form-group mb-3">
+            <label for="exampleInputEmail1">From:</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"
+            th:value="${emailCompany}" name="emailCompany">
+        </div>
+        <div class="form-group mb-3">
+            <label for="exampleInputEmail1">To:</label>
+            <input type="email" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="Enter email"
+            th:value="${emailCandidate}" name="emailCandidate">
+        </div>
+        <div class="form-group mb-3">
+            <label for="exampleInputPassword1">Subject:</label>
+            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Subject" name="subject">
+        </div>
+        <div class="form-group mb-3">
+            <label for="exampleTextarea">Content:</label>
+            <textarea class="form-control" id="exampleTextarea" rows="3" name="content"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Send</button>
+    </form>
+    <div class="w-100 d-flex align-items-center justify-content-center mt-3" th:switch="${message}">
+        <p th:case="null"></p>
+        <p th:case="*" th:text="${message}" class="notify"></p>
+    </div>
+</div>
+</body>
+</html>

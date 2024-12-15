@@ -57,6 +57,16 @@ Thông tin sinh viên:
         Giao diện như sau: 
         ![News Job](https://res.cloudinary.com/dwzptn5fj/image/upload/v1734077530/z6126441929290_ee2e51e958e726188a8a8f75a85b9bf9_cafith.jpg)
         Những thông tin về job của công ty sẽ được hiển thị ở trang này để công ty theo dõi mình đã đăng nhưng job nào
+        
+        Send Mail
+
+        Giao diện xem Candidate
+        ![Candidate-Paging](https://res.cloudinary.com/dwzptn5fj/image/upload/v1734266372/z6133222653886_0818e308e5d0aa4bf5b1b347cd7ce042_jwjm5p.jpg)
+        Company có thể chọn Candidate rồi sau đó tiến hành gửi mail thông qua chức năng Send Mail
+        
+        Giao diện Send Mail
+        ![Send Mail](https://res.cloudinary.com/dwzptn5fj/image/upload/v1734266371/z6133222987611_9d179470bc8621bb147d654283b3cb6f_lpxzti.jpg)
+        Company có thể nhập nội dung phỏng vấn và gửi đến Candidate
 - Candidate:
     + Bao gồm những chức năng sau: 
   

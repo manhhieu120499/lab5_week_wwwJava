@@ -6,6 +6,7 @@ import iuh.fit.vomanhhieu_21097401_lab5week.backend.enums.SkillLevel;
 import iuh.fit.vomanhhieu_21097401_lab5week.backend.models.*;
 import iuh.fit.vomanhhieu_21097401_lab5week.backend.services.candidate.ICandidateService;
 import iuh.fit.vomanhhieu_21097401_lab5week.backend.services.company.ICompanyService;
+import iuh.fit.vomanhhieu_21097401_lab5week.backend.services.email.EmailService;
 import iuh.fit.vomanhhieu_21097401_lab5week.backend.services.job.IJobService;
 import iuh.fit.vomanhhieu_21097401_lab5week.backend.services.job_skill.IJobSkillService;
 import iuh.fit.vomanhhieu_21097401_lab5week.backend.services.skill.ISkillService;
@@ -37,6 +38,9 @@ public class JobController {
 
     @Autowired
     private ISkillService iSkillService;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/list")
     public String getAllJobs(HttpServletRequest request, Model model, @RequestParam("companyName") String companyName) {
@@ -353,5 +357,29 @@ public class JobController {
         model.addAttribute("jobs", jobList);
         model.addAttribute("company", company);
         return "jobs/news-job";
+    }
+
+    @GetMapping("/viewMail")
+    public String getViewMail(HttpServletRequest request, Model model, @RequestParam("email") String email) {
+        HttpSession session = request.getSession();
+        Company company = (Company) session.getAttribute("company");
+        model.addAttribute("emailCompany", company.getEmail());
+        model.addAttribute("emailCandidate", email);
+        return "jobs/mail";
+    }
+
+    @PostMapping("mail/send")
+    public String sendMailInterview(@RequestParam("emailCompany") String emailCompany, @RequestParam("emailCandidate") String emailCandidate,
+                                    @RequestParam("subject") String subject, @RequestParam("content") String content, Model model) {
+
+        try{
+            emailService.sendEmail(emailCandidate, subject, content);
+            model.addAttribute("message", "Send Mail Success!");
+            model.addAttribute("emailCompany", "");
+            model.addAttribute("emailCandidate", "");
+        }catch (Exception e) {
+            model.addAttribute("message", "Send Mail Failed!");
+        }
+        return "jobs/mail";
     }
 }

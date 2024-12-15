@@ -113,7 +113,7 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                 <p class="text-muted mb-1" th:text="'PhoneNumber: ' + ${candidate.phone}"></p>
                 <p class="text-muted mb-1"  th:text="'Email: ' + ${candidate.email}"></p>
                 <div class="d-flex justify-content-center mb-2">
-                    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Send Email</button>
+                    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary" th:data="${candidate.email}" onclick="sendMail()">Send Email</button>
                     <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Delete</button>
                 </div>
             </div>
@@ -132,6 +132,12 @@ C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
 <script>
     function logout() {
         window.location.href="/account/logout";
+    }
+
+    function sendMail() {
+        const btnSend = document.querySelector('.btn-primary');
+        const email = btnSend.getAttribute("data");
+        window.location.href="/jobs/viewMail?email=" + encodeURIComponent(email);
     }
 </script>
 </body>
